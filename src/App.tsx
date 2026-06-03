@@ -5,7 +5,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Volume2, VolumeX, RotateCcw, HelpCircle, Trophy, ShoppingBag, Sparkles, QrCode, Share2, Check, X } from 'lucide-react';
+import { Volume2, VolumeX, RotateCcw, HelpCircle, Trophy, ShoppingBag, Sparkles, QrCode, Share2, Check, X, Menu } from 'lucide-react';
 import { UpgradeItem, Gem, SaveData } from './types';
 import { INITIAL_UPGRADES, INITIAL_GEMS } from './utils/initialData';
 import { audio } from './utils/audio';
@@ -151,6 +151,9 @@ export default function App() {
   // スマホ実機連携・公開共有モーダル表示
   const [showQrModal, setShowQrModal] = useState<boolean>(false);
   const [copied, setCopied] = useState<boolean>(false);
+  
+  // ハンバーガーメニューの開閉状態
+  const [showMenu, setShowMenu] = useState<boolean>(false);
 
   // これまでに採掘した「ほうせき」の総数
   const totalGemsMined = gems.reduce((sum, g) => sum + g.count, 0);
@@ -808,6 +811,14 @@ export default function App() {
             >
               {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
             </button>
+            {/* ハンバーガーメニューボタン */}
+            <button
+              onClick={() => setShowMenu(!showMenu)}
+              className="p-1.5 rounded-full bg-white border-2 border-amber-300 text-amber-600 active:scale-90 transition-transform shadow-xs flex items-center justify-center relative z-40"
+              title="メニュー"
+            >
+              <Menu className="w-4 h-4" />
+            </button>
           </div>
         </div>
 
@@ -833,6 +844,45 @@ export default function App() {
             </p>
           )}
         </div>
+
+        {/* ハンバーガーメニューのドロップダウン */}
+        <AnimatePresence>
+          {showMenu && (
+            <>
+              {/* クリックで閉じるための背景マスク */}
+              <div className="fixed inset-0 z-30" onClick={() => setShowMenu(false)} />
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95, y: -10 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: -10 }}
+                transition={{ duration: 0.15 }}
+                className="absolute right-3 top-12 z-40 w-44 bg-white border-2 border-amber-300 rounded-2xl shadow-xl p-2 flex flex-col gap-1"
+              >
+                <button
+                  onClick={() => {
+                    setShowMenu(false);
+                    setShowHelp(true);
+                  }}
+                  className="flex items-center gap-2 w-full px-3 py-2 text-left text-xs font-bold text-slate-700 hover:bg-amber-50 active:bg-amber-100 rounded-xl transition-colors cursor-pointer"
+                >
+                  <HelpCircle className="w-4 h-4 text-sky-500" />
+                  あそびかた ❓
+                </button>
+                
+                <button
+                  onClick={() => {
+                    setShowMenu(false);
+                    setShowResetConfirm(true);
+                  }}
+                  className="flex items-center gap-2 w-full px-3 py-2 text-left text-xs font-bold text-rose-500 hover:bg-rose-50 active:bg-rose-100 rounded-xl transition-colors border-t border-stone-100 pt-2 mt-1 cursor-pointer"
+                >
+                  <RotateCcw className="w-4 h-4 text-rose-500" />
+                  やりなおす 🔄
+                </button>
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* 2. メイン発掘エリア：大きな岩、パーティクル、および左右スキルボタン (画面の約43%高) */}
@@ -957,23 +1007,7 @@ export default function App() {
         </div>
       </div>
 
-      {/* サブ設定ボタン類（画面の真ん中下あたり） */}
-      <div id="game-sub-controls" className="flex justify-center items-center gap-2 mb-2 shrink-0">
-        <button
-          onClick={() => setShowHelp(true)}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border-2 border-sky-300 text-sky-700 text-xs font-bold active:bg-sky-50 shadow-xs"
-        >
-          <HelpCircle className="w-3.5 h-3.5" />
-          あそびかた ❓
-        </button>
-        <button
-          onClick={() => setShowResetConfirm(true)}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border-2 border-rose-200 text-rose-500 text-xs font-bold active:bg-rose-50 shadow-xs"
-        >
-          <RotateCcw className="w-3.5 h-3.5" />
-          やりなおす 🔄
-        </button>
-      </div>
+      {/* サブ設定ボタン類はハンバーガーメニューへ移動しました */}
 
       {/* 3. パワーアップショップ ＆ ずかん のタブ固定パネル (画面の約41%高、iPhone SE/短画面向けに高さを拡張) */}
       <div id="game-tab-panel" className="bg-white border-t-4 border-amber-400 rounded-t-3xl p-3 pb-[calc(12px+env(safe-area-inset-bottom,12px))] flex flex-col h-[41vh] min-h-[265px] shrink-0 shadow-[0_-8px_20px_rgba(217,119,6,0.15)] relative z-20">
