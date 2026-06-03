@@ -1,0 +1,6 @@
+{
+  "name": "ざくざく こうざん！",
+  "description": "スマホの かたてもちで たのしく あそべる、ざくざく クリッカーゲーム！ほうせきを ざくざく ほりあてよう！",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
