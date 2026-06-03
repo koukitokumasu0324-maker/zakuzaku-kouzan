@@ -976,7 +976,7 @@ export default function App() {
       </div>
 
       {/* 3. パワーアップショップ ＆ ずかん のタブ固定パネル (画面の約41%高、iPhone SE/短画面向けに高さを拡張) */}
-      <div id="game-tab-panel" className="bg-white border-t-4 border-amber-400 rounded-t-3xl p-3 flex flex-col h-[41vh] min-h-[245px] shrink-0 shadow-[0_-8px_20px_rgba(217,119,6,0.15)] relative z-20">
+      <div id="game-tab-panel" className="bg-white border-t-4 border-amber-400 rounded-t-3xl p-3 pb-[calc(12px+env(safe-area-inset-bottom,12px))] flex flex-col h-[41vh] min-h-[265px] shrink-0 shadow-[0_-8px_20px_rgba(217,119,6,0.15)] relative z-20">
         
         {/* タブ切り替えボタン */}
         <div id="panel-tabs" className="flex gap-2 mb-2.5">
@@ -1005,7 +1005,7 @@ export default function App() {
         </div>
 
         {/* タブの中身（個別スクロールエリア） */}
-        <div id="panel-content" className="flex-1 overflow-y-auto pr-1 pb-1 scrollbar-thin">
+        <div id="panel-content" className="flex-1 overflow-y-auto pr-1 pb-16 scrollbar-thin">
           
           {/* おみせ (パワーアップ) タブ */}
           {activeTab === 'shop' && (
